@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { AppBar, CssBaseline, makeStyles, Tab, Tabs, Toolbar, Typography } from '@material-ui/core';
+import { ChangeEvent, useState } from 'react';
+import Detail from './Detail';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    //
+  },
+  title: {
+    flex: 1,
+  },
+  offset: theme.mixins.toolbar,
+  content: {
+    padding: theme.spacing(1),
+  },
+}));
 
 function App() {
+  const [tab, setTab] = useState(0);
+  const classes = useStyles();
+
+  const handleChange = (event: ChangeEvent<unknown>, newTab: number) => {
+    setTab(newTab);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <CssBaseline />
+      <AppBar position="fixed" color="primary">
+        <Toolbar>
+          <Typography className={classes.title}>売上入力</Typography>
+          <Tabs value={tab} onChange={handleChange}>
+            <Tab label="概要" />
+            <Tab label="明細" />
+            <Tab label="プレビュー" />
+          </Tabs>
+        </Toolbar>
+      </AppBar>
+      <div className={classes.offset} />
+      <div className={classes.content}>
+        {tab === 0 && <Typography>概要</Typography>}
+        {tab === 1 && <Detail />}
+        {tab === 2 && <Typography>プレビュー</Typography>}
+      </div>
+    </>
   );
 }
 
